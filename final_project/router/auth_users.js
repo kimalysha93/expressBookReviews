@@ -55,30 +55,34 @@ regd_users.post("/login", (req, res) => {
 
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
-  console.log("ISBN: " + req.params.isbn);
-  console.log("Session Username: " + req.session.authenticated.username);
-  console.log("Review: " + req.params.review);
+  // console.log("ISBN: " + req.params.isbn);
+  //console.log("Session Username: " + req.session.authenticated.username);
+  //console.log("Review: " + req.params.review);
 
   const isbn = req.params.isbn;
   const username = req.session.authenticated.username;
 
-  if (req.params.isbn) {
+  if (isbn) {
     // Create review based on provided isbn
     books[isbn].reviews[username] = {
       //username: req.session.authenticated.username,
       review: req.params.review,
     };
-    console.log(books[isbn]);
+    //console.log(books[isbn]);
+    res.send(
+      username + " has added/updated a review for the book with ISBN " + isbn
+    );
   }
+});
 
-  res.send(
-    username + " has added/updated a review for the book with ISBN " + isbn
-  );
-
-  /*
+regd_users.delete("/auth/review/:isbn", (req, res) => {
   const isbn = req.params.isbn;
-  res.send(books[isbn].reviews);
-  */
+  const username = req.session.authenticated.username;
+
+  if (books[isbn].reviews[username] != null) {
+    delete books[isbn].reviews[username];
+    res.send(username + " has deleted a review for the book with ISBN " + isbn);
+  }
 });
 
 module.exports.authenticated = regd_users;
