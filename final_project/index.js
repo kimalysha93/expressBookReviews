@@ -30,11 +30,11 @@ app.use("/customer/auth/*", function auth(req, res, next) {
         req.users = users;
         next();
       } else {
-        return res.status(403).json({ message: "User not authorized" });
+        return res.status(403).json({ message: "Customer not authorized" });
       }
     });
   } else {
-    return res.status(403).json({ message: "User not logged in" });
+    return res.status(403).json({ message: "Customer not logged in" });
   }
 });
 
