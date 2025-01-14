@@ -43,7 +43,7 @@ regd_users.post("/login", (req, res) => {
       { expiresIn: 60 }
     );
 
-    req.session.authorization = {
+    req.session.authenticated = {
       accessToken,
       username,
     };
@@ -54,7 +54,32 @@ regd_users.post("/login", (req, res) => {
 });
 
 // Add a book review
-regd_users.put("/auth/review/:isbn", (req, res) => {});
+regd_users.put("/auth/review/:isbn", (req, res) => {
+  console.log("ISBN: " + req.params.isbn);
+  console.log("Session Username: " + req.session.authenticated.username);
+  console.log("Review: " + req.params.review);
+
+  const isbn = req.params.isbn;
+  const username = req.session.authenticated.username;
+
+  if (req.params.isbn) {
+    // Create review based on provided isbn
+    books[isbn].reviews[username] = {
+      //username: req.session.authenticated.username,
+      review: req.params.review,
+    };
+    console.log(books[isbn]);
+  }
+
+  res.send(
+    username + " has added/updated a review for the book with ISBN " + isbn
+  );
+
+  /*
+  const isbn = req.params.isbn;
+  res.send(books[isbn].reviews);
+  */
+});
 
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;

@@ -31,7 +31,7 @@ public_users.post("/register", (req, res) => {
       users.push({ username: username, password: password });
       return res.status(200).json({ message: "User successfully registered." });
     } else {
-      return res.status(404).json({ messgae: "User a;ready exists" });
+      return res.status(404).json({ message: "User already exists" });
     }
   }
   // Return error if username or password is missing
