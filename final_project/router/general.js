@@ -63,11 +63,7 @@ public_users.get("/isbn/:isbn", function (req, res) {
   });
 });
 
-// Get book details based on author
-public_users.get("/author/:author", function (req, res) {
-  // Retrieve the author parameter from the request URL and send corresponding book details
-  const author = JSON.parse(req.params.author);
-
+async function getBooksByAuthor(author) {
   let matching_books = {};
 
   let keys = Object.keys(books);
@@ -78,7 +74,17 @@ public_users.get("/author/:author", function (req, res) {
     }
   }
 
-  res.send(matching_books);
+  return matching_books;
+}
+
+// Get book details based on author
+public_users.get("/author/:author", function (req, res) {
+  // Retrieve the author parameter from the request URL and send corresponding book details
+  const author = JSON.parse(req.params.author);
+
+  getBooksByAuthor(author).then(function (value) {
+    res.send(value);
+  });
 });
 
 // Get all books based on title
