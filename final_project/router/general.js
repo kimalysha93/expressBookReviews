@@ -87,11 +87,7 @@ public_users.get("/author/:author", function (req, res) {
   });
 });
 
-// Get all books based on title
-public_users.get("/title/:title", function (req, res) {
-  // Retrieve the title parameter from the request URL and send corresponding book details
-  const title = JSON.parse(req.params.title);
-
+async function getBooksByTitle(title) {
   let matching_books = {};
 
   let keys = Object.keys(books);
@@ -102,7 +98,17 @@ public_users.get("/title/:title", function (req, res) {
     }
   }
 
-  res.send(matching_books);
+  return matching_books;
+}
+
+// Get all books based on title
+public_users.get("/title/:title", function (req, res) {
+  // Retrieve the title parameter from the request URL and send corresponding book details
+  const title = JSON.parse(req.params.title);
+
+  getBooksByTitle(title).then(function (value) {
+    res.send(value);
+  });
 });
 
 //  Get book review
